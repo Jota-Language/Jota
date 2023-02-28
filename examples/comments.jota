@@ -1,0 +1,4 @@
+// Can't read me at all!
+// I'm invisible to the interpreter :D
+
+print "I'm visible, though!";

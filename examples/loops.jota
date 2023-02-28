@@ -1,0 +1,10 @@
+var a = 0;
+while (a <= 5) {
+    print a;
+    a = a + 1;
+}
+
+
+for (var b = 0; b <= 5; b = b + 1) {
+    print b;
+}
