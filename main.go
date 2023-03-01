@@ -82,7 +82,6 @@ func runREPL() {
 	}
 }
 
-
 func run(source string) {
 	scanner := scanner.CreateScanner(source, errHandler)
 	tokens := scanner.ScanTokens()
