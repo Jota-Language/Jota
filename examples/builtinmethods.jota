@@ -1,11 +1,22 @@
-var timer = clock(); // Gets the Unix time (time spent since 1st Jan 1970) in seconds
+assign timer = clock(); # Gets the Unix time (time spent since 1st Jan 1970) in seconds
 
-// Some random stuff in the middle to waste some time (for demoing the clock() method :D)
-var b = 0;
-for (var a = 0; a < 100000; a = a + 1) {
-    var b = 0;
+# Some random stuff in the middle to waste some time (for demoing the clock() method :D)
+assign b = 0;
+for (assign a = 0; a < 100000; a = ++a) {
+    assign b = 0;
 }
 
-var diff = clock() - timer; // Get the time spent for the loop above
-print "Seconds: " + stringify(diff); // stringify() changes a type of, say, number to string!
-print "Milliseconds: " + stringify(milliseconds(diff)) + "ms"; // milliseconds() takes a number and returns it in milliseconds (rounded to at most two decimal points)
+assign diff = clock() - timer; # Get the time spent for the loop above
+print "Seconds: " + stringify(diff); # stringify() changes a type of, say, number to string!
+print "Milliseconds: " + stringify(milliseconds(diff)) + "ms"; # milliseconds() takes a number and returns it in milliseconds (rounded to at most two decimal points)
+
+
+# Type comparison 
+# - You can use type() to get the type of a variable in the form of a string 
+assign number = 10;
+print type(number);
+
+print type(nilvalue); # <nil> (since it's not an assigned variable name)
+
+assign stringified = stringify(number);
+print type(stringified);

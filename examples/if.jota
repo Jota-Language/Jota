@@ -1,4 +1,4 @@
-var a = 10;
+assign a = 10;
 
 if (a < 20) {
     print "I'm less than 20!";
@@ -6,12 +6,12 @@ if (a < 20) {
     print "I'm more than 20!";
 }
 
-var b = 20;
-if ((b > a) and (b > 15)) {
+assign b = 20;
+if ((b > a) && (b > 15)) {
     print "I'm more than both 'a' and 15!";
 }
 
-var c = 30;
-if ((a > c) or (c > b)) {
+assign c = 30;
+if ((a > c) || (c > b)) {
     print "I'm more than 'b' or less than 'a'!";
 }

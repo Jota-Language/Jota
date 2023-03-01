@@ -8,22 +8,20 @@ import (
 
 var (
 	keywords = map[string]ast.Type{
-		"and":    ast.AND,
-		"class":  ast.CLASS,
-		"else":   ast.ELSE,
-		"false":  ast.FALSE,
-		"for":    ast.FOR,
-		"fun":    ast.FUN,
-		"if":     ast.IF,
-		"nil":    ast.NIL,
-		"or":     ast.OR,
-		"print":  ast.PRINT,
-		"return": ast.RETURN,
-		"super":  ast.SUPER,
-		"this":   ast.THIS,
-		"true":   ast.TRUE,
-		"var":    ast.VAR,
-		"while":  ast.WHILE,
+		"class":    ast.CLASS,
+		"else":     ast.ELSE,
+		"false":    ast.FALSE,
+		"for":      ast.FOR,
+		"function": ast.FUNCTION,
+		"if":       ast.IF,
+		"nil":      ast.NIL,
+		"print":    ast.PRINT,
+		"return":   ast.RETURN,
+		"super":    ast.SUPER,
+		"this":     ast.THIS,
+		"true":     ast.TRUE,
+		"assign":   ast.VARIABLE,
+		"while":    ast.WHILE,
 	}
 )
 
@@ -67,13 +65,35 @@ func (s *Scanner) scanToken() {
 	case '.':
 		s.addToken(ast.DOT)
 	case '-':
-		s.addToken(ast.MINUS)
+		if s.match('-') {
+			s.addToken(ast.DECREMENT)
+		} else {
+			s.addToken(ast.MINUS)
+		}
 	case '+':
-		s.addToken(ast.PLUS)
+		if s.match('+') {
+			s.addToken(ast.INCREMENT)
+		} else {
+			s.addToken(ast.PLUS)
+		}
+	case '^':
+		s.addToken(ast.CARET)
 	case ';':
 		s.addToken(ast.SEMICOLON)
 	case '*':
 		s.addToken(ast.ASTERISK)
+	case '&':
+		if s.match('&') {
+			s.addToken(ast.AND)
+		} else {
+			errors.ErrWithoutToken(s.line, "unexpected character found", s.errorHandler)
+		}
+	case '|':
+		if s.match('|') {
+			s.addToken(ast.OR)
+		} else {
+			errors.ErrWithoutToken(s.line, "unexpected character found", s.errorHandler)
+		}
 	case '!':
 		if s.match('=') {
 			s.addToken(ast.BANG_EQUAL)
@@ -99,12 +119,10 @@ func (s *Scanner) scanToken() {
 			s.addToken(ast.GREATER)
 		}
 	case '/':
-		if s.match('/') {
-			for s.peek() != '\n' && !s.isAtEnd() {
-				s.advance()
-			}
-		} else {
-			s.addToken(ast.SLASH)
+		s.addToken(ast.SLASH)
+	case '#':
+		for s.peek() != '\n' && !s.isAtEnd() {
+			s.advance()
 		}
 	case ' ', '\r', '\t':
 	case '\n':
@@ -117,7 +135,7 @@ func (s *Scanner) scanToken() {
 		} else if s.isAlpha(char) {
 			s.identifier()
 		} else {
-			errors.ErrWithoutToken(s.line, "enexpected character found", s.errorHandler)
+			errors.ErrWithoutToken(s.line, "unexpected character found", s.errorHandler)
 		}
 	}
 }

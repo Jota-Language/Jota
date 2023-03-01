@@ -1,5 +1,5 @@
-var a = 10;
-var b = 20;
+assign a = 10;
+assign b = a + 20;
 
 print a;
 print b;

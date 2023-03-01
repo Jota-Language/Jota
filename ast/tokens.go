@@ -19,6 +19,7 @@ const (
 	SEMICOLON
 	SLASH
 	ASTERISK
+	CARET
 
 	// 1-2 chars
 	BANG
@@ -29,6 +30,8 @@ const (
 	GREATER_EQUAL
 	LESS
 	LESS_EQUAL
+	INCREMENT 
+	DECREMENT
 
 	// Literals
 	IDENTIFIER
@@ -40,7 +43,7 @@ const (
 	CLASS
 	ELSE
 	FALSE
-	FUN
+	FUNCTION
 	FOR
 	IF
 	NIL
@@ -50,7 +53,7 @@ const (
 	SUPER
 	THIS
 	TRUE
-	VAR
+	VARIABLE
 	WHILE
 
 	EOF

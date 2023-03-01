@@ -31,7 +31,7 @@ func (e *Environment) Get(name ast.Token) any {
 		return e.Enclosing.Get(name)
 	}
 
-	panic(errors.RuntimeError{Token: name, Message: "Undefined variable '" + name.Lexeme + "'."})
+	panic(errors.RuntimeError{Token: name, Message: "Undefined variable '" + name.Lexeme + "'"})
 }
 
 func (e *Environment) Assign(name ast.Token, value any) {
@@ -45,5 +45,5 @@ func (e *Environment) Assign(name ast.Token, value any) {
 		return
 	}
 
-	panic(errors.RuntimeError{Token: name, Message: "Undefined variable '" + name.Lexeme + "'."})
+	panic(errors.RuntimeError{Token: name, Message: "Undefined variable '" + name.Lexeme + "'"})
 }

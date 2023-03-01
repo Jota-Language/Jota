@@ -1,14 +1,14 @@
-// Strings
-var string = "I'm a string";
-var numberToString = stringify(10);
+# Strings
+assign string = "I'm a string";
+assign numberToString = stringify(10);
 
 print string;
 print "Ten: " + numberToString;
 
 
-// Numbers
-var int = 10; // It's the same as 10.0, but the .0 actually gets removed!
-var float = 123.456;
+# Numbers
+assign int = 10; # It's the same as 10.0, but the .0 actually gets removed!
+assign float = 123.456;
 
 print int;
 print float;
@@ -16,13 +16,16 @@ print int + 12.22;
 print float + 20.987;
 
 
-// Booleans
-var thatsTrue = true;
-var thatsFalse = false;
-var isLess = 10 < 20;
-var isMore = 10 > 20;
+# Booleans
+assign thatsTrue = true;
+assign thatsFalse = false;
+assign isLess = 10 < 20;
+assign isMore = 10 > 20;
 
 print thatsTrue;
 print thatsFalse;
 print isLess;
 print isMore;
+
+# Nil 
+print a; # Since this is an undefined variable, it will return nil.

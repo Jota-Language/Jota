@@ -37,18 +37,18 @@ func (p *Parser) declaration() ast.Statement {
 		}
 	}()
 
-	if p.match(ast.FUN) {
+	if p.match(ast.FUNCTION) {
 		return p.function("function")
 	}
 
-	if p.match(ast.VAR) {
+	if p.match(ast.VARIABLE) {
 		return p.variableDeclaration()
 	}
 	return p.statement()
 }
 
 func (p *Parser) function(kind string) *ast.FunctionStatement {
-	name := p.consume(ast.IDENTIFIER, "a " + kind + " is expected")
+	name := p.consume(ast.IDENTIFIER, "a "+kind+" is expected")
 	p.consume(ast.LEFT_BRACKET, "expected '(' after "+kind+" name")
 
 	var parameters []ast.Token
@@ -76,7 +76,7 @@ func (p *Parser) function(kind string) *ast.FunctionStatement {
 	}
 	p.consume(ast.RIGHT_BRACKET, "expected ')' after parameters")
 
-	p.consume(ast.LEFT_BRACE, "expected '{' before " + kind + " body")
+	p.consume(ast.LEFT_BRACE, "expected '{' before "+kind+" body")
 	body := p.block()
 	return &ast.FunctionStatement{Name: name, Params: parameters, Body: body}
 }
@@ -144,7 +144,7 @@ func (p *Parser) forStatement() ast.Statement {
 	var initializer ast.Statement
 	if p.match(ast.SEMICOLON) {
 		initializer = nil
-	} else if p.match(ast.VAR) {
+	} else if p.match(ast.VARIABLE) {
 		initializer = p.variableDeclaration()
 	} else {
 		initializer = p.expressionStatement()
@@ -248,7 +248,7 @@ func (p *Parser) variableDeclaration() ast.Statement {
 	if p.match(ast.EQUAL) {
 		initializer = p.expression()
 	}
-	p.consume(ast.SEMICOLON, "expected ';' after a variable delcaration")
+	p.consume(ast.SEMICOLON, "expected ';' after a variable declaration")
 	return &ast.VariableStatement{Name: name, Initializer: initializer}
 }
 
@@ -279,7 +279,7 @@ func (p *Parser) comparison() ast.Expression {
 func (p *Parser) term() ast.Expression {
 	expression := p.factor()
 
-	for p.match(ast.MINUS, ast.PLUS) {
+	for p.match(ast.MINUS, ast.PLUS, ast.CARET) {
 		operator := p.previous()
 		right := p.factor()
 		expression = &ast.Binary{Left: expression, Operator: operator, Right: right}
@@ -301,7 +301,7 @@ func (p *Parser) factor() ast.Expression {
 }
 
 func (p *Parser) unary() ast.Expression {
-	if p.match(ast.BANG, ast.MINUS) {
+	if p.match(ast.BANG, ast.MINUS, ast.DECREMENT, ast.INCREMENT) {
 		operator := p.previous()
 		right := p.unary()
 		return &ast.Unary{Operator: operator, Right: right}
@@ -395,14 +395,7 @@ func (p *Parser) synchronize() {
 		}
 
 		switch p.peek().Type {
-		case ast.CLASS:
-		case ast.FUN:
-		case ast.VAR:
-		case ast.FOR:
-		case ast.IF:
-		case ast.WHILE:
-		case ast.PRINT:
-		case ast.RETURN:
+		case ast.CLASS, ast.FUNCTION, ast.VARIABLE, ast.FOR, ast.IF, ast.WHILE, ast.PRINT, ast.RETURN:
 			return
 		}
 

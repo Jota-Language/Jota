@@ -18,6 +18,8 @@ type Interpreter struct {
 
 func NewInterpreter(errorHandler errors.ErrorHandler) *Interpreter {
 	globals := environment.NewEnvironment()
+
+	// TODO: put these in a separate file!
 	globals.Define("clock", &BuiltInFunction{
 		ArityNumber: 0,
 		NativeLogic: func(interpreter *Interpreter, arguments []any) any {
@@ -27,7 +29,11 @@ func NewInterpreter(errorHandler errors.ErrorHandler) *Interpreter {
 	globals.Define("milliseconds", &BuiltInFunction{
 		ArityNumber: 1,
 		NativeLogic: func(interpreter *Interpreter, arguments []any) any {
-			return float64(math.Round(arguments[0].(float64) * 1000 * 100) / 100)
+			value, ok := arguments[0].(float64)
+			if !ok {
+				return nil
+			}
+			return float64(math.Round(value*1000*100) / 100)
 		},
 	})
 	globals.Define("stringify", &BuiltInFunction{
@@ -36,6 +42,67 @@ func NewInterpreter(errorHandler errors.ErrorHandler) *Interpreter {
 			return fmt.Sprint(arguments[0])
 		},
 	})
+	globals.Define("toRadians", &BuiltInFunction{
+		ArityNumber: 1,
+		NativeLogic: func(interpreter *Interpreter, arguments []any) any {
+			value, ok := arguments[0].(float64)
+			if !ok {
+				return nil
+			}
+			return value * (math.Pi / 180)
+		},
+	})
+	globals.Define("tan", &BuiltInFunction{
+		ArityNumber: 1,
+		NativeLogic: func(interpreter *Interpreter, arguments []any) any {
+			value, ok := arguments[0].(float64)
+			if !ok {
+				return nil
+			}
+			return math.Tan(value)
+		},
+	})
+	globals.Define("cot", &BuiltInFunction{
+		ArityNumber: 1,
+		NativeLogic: func(interpreter *Interpreter, arguments []any) any {
+			value, ok := arguments[0].(float64)
+			if !ok {
+				return nil
+			}
+			return 1 / math.Tan(value)
+		},
+	})
+	globals.Define("sin", &BuiltInFunction{
+		ArityNumber: 1,
+		NativeLogic: func(interpreter *Interpreter, arguments []any) any {
+			value, ok := arguments[0].(float64)
+			if !ok {
+				return nil
+			}
+			return math.Sin(value)
+		},
+	})
+	globals.Define("cos", &BuiltInFunction{
+		ArityNumber: 1,
+		NativeLogic: func(interpreter *Interpreter, arguments []any) any {
+			value, ok := arguments[0].(float64)
+			if !ok {
+				return nil
+			}
+			return math.Cos(value)
+		},
+	})
+	globals.Define("type", &BuiltInFunction{
+		ArityNumber: 1,
+		NativeLogic: func(interpreter *Interpreter, arguments []any) any {
+			if fmt.Sprintf("%T", arguments[0]) == "float64" {
+				return "number"
+			} else {
+				return fmt.Sprintf("%T", arguments[0])
+			}
+		},
+	})
+
 	return &Interpreter{Globals: globals, Environment: globals, ErrorHandler: errorHandler}
 }
 
@@ -155,6 +222,12 @@ func (i *Interpreter) VisitUnaryExpression(expression *ast.Unary) any {
 		return -right.(float64)
 	case ast.BANG:
 		return !i.isTruthy(right)
+	case ast.INCREMENT:
+		i.checkNumberOperand(expression.Operator, right)
+		return right.(float64) + 1
+	case ast.DECREMENT:
+		i.checkNumberOperand(expression.Operator, right)
+		return right.(float64) - 1
 	}
 
 	return nil
@@ -178,6 +251,9 @@ func (i *Interpreter) VisitBinaryExpression(expression *ast.Binary) any {
 	case ast.ASTERISK:
 		i.checkNumberOperands(expression.Operator, left, right)
 		return left.(float64) * right.(float64)
+	case ast.CARET:
+		i.checkNumberOperands(expression.Operator, left, right)
+		return math.Pow(left.(float64), right.(float64))
 	case ast.PLUS:
 		if lf, lok := left.(float64); lok {
 			if rf, rok := right.(float64); rok {

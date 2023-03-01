@@ -39,6 +39,6 @@ func RuntimeErr(error RuntimeError, handler ErrorHandler) {
 
 func report(line int, where, message string, handler ErrorHandler) {
 	strLine := strconv.Itoa(line)
-	handler.Log.Println(utils.Red + "(:" + strLine + ") Error at " + where + " ->" + utils.White + " " + message + utils.Reset)
+	handler.Log.Println(utils.Red + "(:" + strLine + ") Error " + where + " ->" + utils.White + " " + message + utils.Reset)
 	handler.Error = true
 }
