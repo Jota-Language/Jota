@@ -42,56 +42,6 @@ func NewInterpreter(errorHandler errors.ErrorHandler) *Interpreter {
 			return fmt.Sprint(arguments[0])
 		},
 	})
-	globals.Define("toRadians", &BuiltInFunction{
-		ArityNumber: 1,
-		NativeLogic: func(interpreter *Interpreter, arguments []any) any {
-			value, ok := arguments[0].(float64)
-			if !ok {
-				return nil
-			}
-			return value * (math.Pi / 180)
-		},
-	})
-	globals.Define("tan", &BuiltInFunction{
-		ArityNumber: 1,
-		NativeLogic: func(interpreter *Interpreter, arguments []any) any {
-			value, ok := arguments[0].(float64)
-			if !ok {
-				return nil
-			}
-			return math.Tan(value)
-		},
-	})
-	globals.Define("cot", &BuiltInFunction{
-		ArityNumber: 1,
-		NativeLogic: func(interpreter *Interpreter, arguments []any) any {
-			value, ok := arguments[0].(float64)
-			if !ok {
-				return nil
-			}
-			return 1 / math.Tan(value)
-		},
-	})
-	globals.Define("sin", &BuiltInFunction{
-		ArityNumber: 1,
-		NativeLogic: func(interpreter *Interpreter, arguments []any) any {
-			value, ok := arguments[0].(float64)
-			if !ok {
-				return nil
-			}
-			return math.Sin(value)
-		},
-	})
-	globals.Define("cos", &BuiltInFunction{
-		ArityNumber: 1,
-		NativeLogic: func(interpreter *Interpreter, arguments []any) any {
-			value, ok := arguments[0].(float64)
-			if !ok {
-				return nil
-			}
-			return math.Cos(value)
-		},
-	})
 	globals.Define("type", &BuiltInFunction{
 		ArityNumber: 1,
 		NativeLogic: func(interpreter *Interpreter, arguments []any) any {
@@ -369,5 +319,3 @@ func (i *Interpreter) stringify(object any) string {
 
 	return fmt.Sprint(object)
 }
-
-
