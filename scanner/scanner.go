@@ -120,6 +120,8 @@ func (s *Scanner) scanToken() {
 		}
 	case '/':
 		s.addToken(ast.SLASH)
+    case '%':
+        s.addToken(ast.PERCENT)
 	case '#':
 		for s.peek() != '\n' && !s.isAtEnd() {
 			s.advance()

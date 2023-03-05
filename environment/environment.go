@@ -10,11 +10,7 @@ type Environment struct {
 	Values    map[string]any
 }
 
-func NewEnvironment() *Environment {
-	return &Environment{Enclosing: nil, Values: make(map[string]any)}
-}
-
-func NewEnvironmentWithEnclosing(enclosing *Environment) *Environment {
+func NewEnvironment(enclosing *Environment) *Environment {
 	return &Environment{Enclosing: enclosing, Values: make(map[string]any)}
 }
 
