@@ -98,9 +98,9 @@ func (p *Parser) statement() ast.Statement {
 		return p.printStatement()
 	}
 
-    if p.match(ast.RETURN) {
-        return p.returnStatement()
-    }
+	if p.match(ast.RETURN) {
+		return p.returnStatement()
+	}
 
 	if p.match(ast.LEFT_BRACE) {
 		return &ast.BlockStatement{Statements: p.block()}
@@ -120,16 +120,15 @@ func (p *Parser) block() []ast.Statement {
 }
 
 func (p *Parser) returnStatement() ast.Statement {
-    keyword := p.previous()
-    var value ast.Expression
+	keyword := p.previous()
+	var value ast.Expression
 
-    if !p.check(ast.SEMICOLON) {
-        value = p.expression()
-    }
+	if !p.check(ast.SEMICOLON) {
+		value = p.expression()
+	}
 
-    p.consume(ast.SEMICOLON, "Expected ';' after return value.")
-
-    return &ast.ReturnStatement{Keyword: keyword, Value: value}
+	p.consume(ast.SEMICOLON, "Expected ';' after return value.")
+	return &ast.ReturnStatement{Keyword: keyword, Value: value}
 }
 
 func (p *Parser) ifStatement() ast.Statement {

@@ -12,30 +12,27 @@ type Callable interface {
 
 type Function struct {
 	Declaration ast.FunctionStatement
-    Closure *environment.Environment
+	Closure     *environment.Environment
 }
 
-func (f Function) Call(interpreter *Interpreter, arguments []any) any {
-    var returnValue any
-    defer func() {
-        if r := recover(); r != nil {
-            if e, ok := r.(Return); ok {
-                returnValue = e.Value
-                return
-            }
-        } 
-    }()
+func (f Function) Call(interpreter *Interpreter, arguments []any) (value any) {
+	defer func() {
+		if r := recover(); r != nil {
+			if e, ok := r.(Return); ok {
+				value = e.Value
+			}
+		}
+	}()
 
-    env := environment.NewEnvironment(f.Closure)
+	env := environment.NewEnvironment(f.Closure)
 	for i, param := range f.Declaration.Params {
 		env.Define(param.Lexeme, arguments[i])
 	}
 	interpreter.executeBlock(f.Declaration.Body, env)
-
-	return returnValue
+	return nil
 }
 
-func (f Function) Arity() any {
+func (f Function) Arity() int {
 	return len(f.Declaration.Params)
 }
 

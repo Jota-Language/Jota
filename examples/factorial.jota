@@ -1,0 +1,13 @@
+function factorial(x) {
+    if (x == 1) {
+        return 1;
+    }
+    if (x <= 0) {
+        return "no factorial!";
+    }
+    
+    return x * factorial(x - 1);
+}
+
+assign number = 5;
+print "Factorial: " + stringify(factorial(number));

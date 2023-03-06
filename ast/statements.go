@@ -12,7 +12,7 @@ type StatementVisitor interface {
 	VisitIfStatement(statement IfStatement) interface{}
 	VisitWhileStatement(statement WhileStatement) interface{}
 	VisitFunctionStatement(statement FunctionStatement) interface{}
-    VisitReturnStatement(statement ReturnStatement) interface{}
+	VisitReturnStatement(statement ReturnStatement) interface{}
 }
 
 type ExpressionStatement struct {
@@ -78,10 +78,10 @@ func (fs FunctionStatement) Accept(visitor StatementVisitor) interface{} {
 }
 
 type ReturnStatement struct {
-    Keyword Token
-    Value Expression
+	Keyword Token
+	Value   Expression
 }
 
 func (rs ReturnStatement) Accept(visitor StatementVisitor) interface{} {
-    return visitor.VisitReturnStatement(rs)
+	return visitor.VisitReturnStatement(rs)
 }

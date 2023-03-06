@@ -20,13 +20,13 @@ func NewInterpreter(errorHandler errors.ErrorHandler) *Interpreter {
 	globals := environment.NewEnvironment(nil)
 
 	// TODO: put these in a separate file!
-	globals.Define("clock", &BuiltInFunction{
+	globals.Define("clock", BuiltInFunction{
 		ArityNumber: 0,
 		NativeLogic: func(interpreter *Interpreter, arguments []any) any {
 			return float64(time.Now().UnixNano()) / 1e9 // Returns the elapsed time in seconds.
 		},
 	})
-	globals.Define("milliseconds", &BuiltInFunction{
+	globals.Define("milliseconds", BuiltInFunction{
 		ArityNumber: 1,
 		NativeLogic: func(interpreter *Interpreter, arguments []any) any {
 			value, ok := arguments[0].(float64)
@@ -36,13 +36,13 @@ func NewInterpreter(errorHandler errors.ErrorHandler) *Interpreter {
 			return float64(math.Round(value*1000*100) / 100)
 		},
 	})
-	globals.Define("stringify", &BuiltInFunction{
+	globals.Define("stringify", BuiltInFunction{
 		ArityNumber: 1,
 		NativeLogic: func(interpreter *Interpreter, arguments []any) any {
 			return fmt.Sprint(arguments[0])
 		},
 	})
-	globals.Define("type", &BuiltInFunction{
+	globals.Define("type", BuiltInFunction{
 		ArityNumber: 1,
 		NativeLogic: func(interpreter *Interpreter, arguments []any) any {
 			if fmt.Sprintf("%T", arguments[0]) == "float64" {
@@ -201,7 +201,7 @@ func (i *Interpreter) VisitUnaryExpression(expression ast.Unary) any {
 }
 
 func (i *Interpreter) VisitVariableExpression(expression ast.Variable) any {
-	return i.Environment.Values[expression.Name.Lexeme]
+	return i.Environment.Get(expression.Name)
 }
 
 func (i *Interpreter) VisitBinaryExpression(expression ast.Binary) any {

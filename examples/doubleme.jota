@@ -1,0 +1,7 @@
+function doubleMe(x) {
+    return x * 2;
+}
+
+for (assign i = 0; i <= 20; i = ++i) {
+    print doubleMe(i);
+}

@@ -1,0 +1,15 @@
+assign timer = clock();
+
+function fibonacci(x) {
+    if ((x == 0) || (x == 1)) {
+        return x;
+    }
+
+    return fibonacci(x - 1) + fib(x - 2);
+}
+
+for (assign i = 0; i <= 25; i = ++i) {
+    print fibonacci(i);
+}
+
+print stringify(milliseconds(clock() - timer)) + "ms"; # You can really see the walked AST burn with high numbers!
